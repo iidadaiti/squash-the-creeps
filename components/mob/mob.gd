@@ -5,6 +5,8 @@ extends CharacterBody3D
 # Maximum speed of the mob in meters per second.
 @export var max_speed := 18.0
 
+signal squashed()
+
 
 func _physics_process(_delta: float) -> void:
 	move_and_slide()
@@ -20,7 +22,7 @@ func initialize(start_position: Vector3, player_position: Vector3) -> void:
 	rotate_y(randf_range(-PI / 4, PI / 4))
 
 	# reset height
-	position.y = 0
+	position.y = maxf(position.y, 0)
 
 	# We calculate a random speed (integer)
 	var random_speed = randf_range(min_speed, max_speed)
@@ -32,4 +34,9 @@ func initialize(start_position: Vector3, player_position: Vector3) -> void:
 
 
 func _on_visible_on_screen_notifier_3d_screen_exited() -> void:
+	queue_free()
+
+
+func squash():
+	squashed.emit()
 	queue_free()
