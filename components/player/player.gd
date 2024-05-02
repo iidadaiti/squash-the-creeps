@@ -70,6 +70,9 @@ func _physics_process(delta):
 
 	if move_vector != Vector3.ZERO:
 		$Pivot.look_at(position + move_vector, Vector3.UP)
+		$AnimationPlayer.speed_scale = 4
+	else:
+		$AnimationPlayer.speed_scale = 1
 
 	# Ground Velocity
 	_target_velocity.x = move_vector.x * speed
@@ -94,6 +97,8 @@ func _physics_process(delta):
 	# Moving the Character
 	velocity = _target_velocity
 	move_and_slide()
+
+	$Pivot.rotation.x = PI / 6 * velocity.y / jump_impulse
 
 
 func die():
