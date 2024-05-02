@@ -16,6 +16,11 @@ extends CharacterBody3D
 var _target_velocity = Vector3.ZERO
 
 
+# Emitted when the player was hit by a mob.
+# Put this at the top of the script.
+signal hit
+
+
 func _get_input_move_vector() -> Vector3:
 	var input_vector := Vector3.ZERO
 
@@ -89,3 +94,12 @@ func _physics_process(delta):
 	# Moving the Character
 	velocity = _target_velocity
 	move_and_slide()
+
+
+func die():
+	hit.emit()
+	queue_free()
+
+
+func _on_mob_detector_body_entered(body: Node3D) -> void:
+	die()

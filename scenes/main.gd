@@ -5,6 +5,10 @@ extends Node
 
 
 func _on_mob_timer_timeout() -> void:
+	var player := $Player
+	if player == null:
+		return
+
 	if not mob_scene:
 		push_warning("mob_scene is null")
 		return
@@ -19,8 +23,11 @@ func _on_mob_timer_timeout() -> void:
 	# And give it a random offset.
 	mob_spawn_location.progress_ratio = randf()
 
-	var player_position = $Player.position
-	mob.initialize(mob_spawn_location.position, player_position)
+	mob.initialize(mob_spawn_location.position, player.position)
 
 	# Spawn the mob by adding it to the Main scene.
 	add_child(mob)
+
+
+func _on_player_hit() -> void:
+	$MobTimer.stop()
