@@ -2,6 +2,10 @@ extends CharacterBody3D
 
 # How fast the player moves in meters per second.
 @export var speed = 14
+
+# Vertical impulse applied to the character upon jumping in meters per second.
+@export var jump_impulse = 20
+
 # The downward acceleration when in the air, in meters per second squared.
 @export var fall_acceleration = 75
 
@@ -35,6 +39,10 @@ func _physics_process(delta):
 	# Ground Velocity
 	_target_velocity.x = move_vector.x * speed
 	_target_velocity.z = move_vector.z * speed
+
+	# Jumping
+	if is_on_floor() and Input.is_action_just_pressed("jump"):
+		_target_velocity.y = jump_impulse
 
 	# Vertical Velocity
 	if not is_on_floor():
